@@ -373,7 +373,7 @@
         <div class="info-panel" id="infoPanel">
             <h2>Welcome, Adventurer</h2>
             <p>Click on explored hexes to view their descriptions. Upload your hex map image to begin your journey.</p>
-            <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;"><em>Tip: Place <strong>map.png</strong> and <strong>map-data.json</strong> files in your repository to automatically load the map and share the state with all players. Use the Export button in edit mode to create the JSON file.</em></p>
+            <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;"><em>Tip: Place <strong>map.jpg</strong> and <strong>map-data.json</strong> files in your repository to automatically load the map and share the state with all players. Use the Export button in edit mode to create the JSON file.</em></p>
         </div>
 
         <div class="edit-mode" id="editMode" style="display: none;">
@@ -761,7 +761,7 @@
         async function loadMapData() {
             // Try to load map image from repository
             try {
-                const imageResponse = await fetch('map.png');
+                const imageResponse = await fetch('map.jpg');
                 if (imageResponse.ok) {
                     const blob = await imageResponse.blob();
                     const img = new Image();
@@ -773,7 +773,7 @@
                     img.src = URL.createObjectURL(blob);
                 }
             } catch (error) {
-                console.log('No map.png in repository, user can upload manually');
+                console.log('No map.jpg in repository, user can upload manually');
             }
             
             // Try to load map data from repository
