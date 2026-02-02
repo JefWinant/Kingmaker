@@ -1,0 +1,22 @@
+{
+  "hexData": {
+    "2,2": {
+      "explored": true,
+      "description": ""
+    },
+    "5,2": {
+      "explored": true,
+      "description": ""
+    },
+    "6,1": {
+      "explored": true,
+      "description": "Oleg's Trading Post"
+    }
+  },
+  "playerLocation": null,
+  "settings": {
+    "hexSize": 162,
+    "offsetX": -426,
+    "offsetY": 174
+  }
+}

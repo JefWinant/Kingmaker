@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hex Map Explorer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --parchment: #f4e8d0;
+            --ink: #2c1810;
+            --accent: #8b4513;
+            --gold: #d4af37;
+            --shadow: rgba(44, 24, 16, 0.3);
+        }
+
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #2c1810 0%, #4a2c1f 100%);
+            color: var(--ink);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--parchment);
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--accent);
+            text-shadow: 2px 2px 4px var(--shadow);
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            color: var(--ink);
+            opacity: 0.7;
+        }
+
+        .controls {
+            background: rgba(139, 69, 19, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid var(--accent);
+        }
+
+        .control-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .control-item {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--accent);
+            font-size: 0.95em;
+        }
+
+        input[type="range"],
+        input[type="number"],
+        input[type="file"],
+        input[type="password"],
+        button {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid var(--accent);
+            border-radius: 4px;
+            background: white;
+            font-family: 'Crimson Text', serif;
+        }
+
+        input[type="range"] {
+            padding: 0;
+        }
+
+        button {
+            background: var(--accent);
+            color: var(--parchment);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            background: var(--gold);
+            color: var(--ink);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .map-container {
+            position: relative;
+            background: #1a1a1a;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 3px solid var(--accent);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        #mapCanvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            cursor: crosshair;
+        }
+
+        .info-panel {
+            background: rgba(139, 69, 19, 0.05);
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 2px solid var(--accent);
+            min-height: 150px;
+        }
+
+        .info-panel h2 {
+            font-family: 'Cinzel', serif;
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .info-panel p {
+            line-height: 1.6;
+            color: var(--ink);
+        }
+
+        .edit-mode {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(139, 69, 19, 0.2));
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 2px dashed var(--gold);
+        }
+
+        .edit-mode h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            border: 2px solid var(--accent);
+            border-radius: 4px;
+            font-family: 'Crimson Text', serif;
+            resize: vertical;
+            margin-bottom: 10px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+
+        .status {
+            text-align: center;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .status.success {
+            background: rgba(34, 139, 34, 0.2);
+            color: darkgreen;
+            border: 2px solid darkgreen;
+        }
+
+        .status.error {
+            background: rgba(139, 0, 0, 0.2);
+            color: darkred;
+            border: 2px solid darkred;
+        }
+
+        .auth-section {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .legend {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-box {
+            width: 30px;
+            height: 20px;
+            border: 2px solid var(--accent);
+            border-radius: 3px;
+        }
+
+        .collapsible-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px;
+            background: rgba(139, 69, 19, 0.2);
+            border-radius: 4px;
+            margin-bottom: 10px;
+            user-select: none;
+        }
+
+        .collapsible-header:hover {
+            background: rgba(139, 69, 19, 0.3);
+        }
+
+        .collapsible-header h3 {
+            margin: 0;
+            font-family: 'Cinzel', serif;
+            color: var(--accent);
+            font-size: 1.1em;
+        }
+
+        .collapsible-arrow {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .collapsible-arrow.open {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .collapsible-content.open {
+            max-height: 500px;
+        }
+
+        @media (max-width: 768px) {
+            .control-group {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚔ Hex Map Explorer ⚔</h1>
+        <p class="subtitle">Chart the Unknown Realms</p>
+
+        <div class="controls">
+            <div class="control-group">
+                <div class="control-item">
+                    <label for="mapImage">Upload Hex Map Image:</label>
+                    <input type="file" id="mapImage" accept="image/*">
+                </div>
+            </div>
+
+            <div class="collapsible-section">
+                <div class="collapsible-header" id="adjustmentToggle">
+                    <h3>⚙ Hex Grid Adjustments</h3>
+                    <span class="collapsible-arrow">▼</span>
+                </div>
+                <div class="collapsible-content" id="adjustmentPanel">
+                    <div class="control-group">
+                        <div class="control-item">
+                            <label for="hexSize">Hex Size: <span id="hexSizeValue">320</span>px</label>
+                            <input type="range" id="hexSize" min="20" max="500" value="320">
+                        </div>
+                        <div class="control-item">
+                            <label for="offsetX">Horizontal Offset: <span id="offsetXValue">0</span>px</label>
+                            <input type="range" id="offsetX" min="-500" max="500" value="0">
+                        </div>
+                        <div class="control-item">
+                            <label for="offsetY">Vertical Offset: <span id="offsetYValue">0</span>px</label>
+                            <input type="range" id="offsetY" min="-500" max="500" value="0">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="control-item">
+                            <label for="gridOpacity">Grid Opacity: <span id="gridOpacityValue">30</span>%</label>
+                            <input type="range" id="gridOpacity" min="0" max="100" value="30">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-section">
+                <div class="control-item">
+                    <label for="password">Admin Password:</label>
+                    <input type="password" id="password" placeholder="Enter password to edit">
+                </div>
+                <button id="loginBtn" style="max-width: 200px;">Login</button>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-box" style="background: rgba(0,0,0,0.7);"></div>
+                    <span>Unexplored</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box" style="background: transparent;"></div>
+                    <span>Explored</span>
+                </div>
+                <div class="legend-item">
+                    <span style="font-size: 1.5em; color: #dc143c;">✕</span>
+                    <span>Player Location</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-container">
+            <canvas id="mapCanvas"></canvas>
+        </div>
+
+        <div class="info-panel" id="infoPanel">
+            <h2>Welcome, Adventurer</h2>
+            <p>Click on explored hexes to view their descriptions. Upload your hex map image to begin your journey.</p>
+            <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;"><em>Tip: Place <strong>map.png</strong> and <strong>map-data.json</strong> files in your repository to automatically load the map and share the state with all players. Use the Export button in edit mode to create the JSON file.</em></p>
+        </div>
+
+        <div class="edit-mode" id="editMode" style="display: none;">
+            <h3>✎ Edit Mode</h3>
+            <p><strong>Selected Hex:</strong> <span id="selectedHex">None</span></p>
+            <div class="checkbox-group">
+                <input type="checkbox" id="exploredCheckbox">
+                <label for="exploredCheckbox">Mark as Explored</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="playerLocationCheckbox">
+                <label for="playerLocationCheckbox">Set as Player Location</label>
+            </div>
+            <label for="hexDescription">Hex Description:</label>
+            <textarea id="hexDescription" placeholder="Enter description for this hex..."></textarea>
+            <button id="saveHexBtn">Save Hex Data</button>
+            <button id="exportBtn" style="margin-top: 10px;">Export Map Data</button>
+            <button id="importBtn" style="margin-top: 10px;">Import Map Data</button>
+            <input type="file" id="importFile" accept=".json" style="display: none;">
+        </div>
+
+        <div id="statusMessage"></div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('mapCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // State
+        let mapImage = null;
+        let hexSize = 320;
+        let offsetX = 0;
+        let offsetY = 0;
+        let gridOpacity = 0.3;
+        let isAuthenticated = false;
+        let selectedHexKey = null;
+        
+        // Data storage
+        let hexData = {};
+        let playerLocation = null;
+        const PASSWORD = 'adventure123'; // Change this to your preferred password
+        
+        // Hex geometry (pointy-top orientation)
+        const hexHeight = (size) => size * 2;
+        const hexWidth = (size) => size * Math.sqrt(3);
+        
+        function getHexKey(q, r) {
+            return `${q},${r}`;
+        }
+        
+        function drawHexagon(x, y, size, fill = true) {
+            ctx.beginPath();
+            for (let i = 0; i < 6; i++) {
+                const angle = Math.PI / 3 * i - Math.PI / 6; // Subtract π/6 (30°) to rotate
+                const hx = x + size * Math.cos(angle);
+                const hy = y + size * Math.sin(angle);
+                if (i === 0) ctx.moveTo(hx, hy);
+                else ctx.lineTo(hx, hy);
+            }
+            ctx.closePath();
+            if (fill) ctx.fill();
+            ctx.stroke();
+        }
+        
+        function axialToPixel(q, r, size, offX, offY) {
+            const x = size * (Math.sqrt(3) * q + Math.sqrt(3)/2 * r) + offX;
+            const y = size * (3/2 * r) + offY;
+            return { x, y };
+        }
+        
+        function pixelToAxial(x, y, size, offX, offY) {
+            const adjustedX = x - offX;
+            const adjustedY = y - offY;
+            
+            const q = (Math.sqrt(3)/3 * adjustedX - 1/3 * adjustedY) / size;
+            const r = (2/3 * adjustedY) / size;
+            
+            return axialRound(q, r);
+        }
+        
+        function axialRound(q, r) {
+            const s = -q - r;
+            let rq = Math.round(q);
+            let rr = Math.round(r);
+            let rs = Math.round(s);
+            
+            const q_diff = Math.abs(rq - q);
+            const r_diff = Math.abs(rr - r);
+            const s_diff = Math.abs(rs - s);
+            
+            if (q_diff > r_diff && q_diff > s_diff) {
+                rq = -rr - rs;
+            } else if (r_diff > s_diff) {
+                rr = -rq - rs;
+            }
+            
+            return { q: rq, r: rr };
+        }
+        
+        function drawMap() {
+            if (!mapImage) return;
+            
+            canvas.width = mapImage.width;
+            canvas.height = mapImage.height;
+            
+            // Draw the base map image
+            ctx.drawImage(mapImage, 0, 0);
+            
+            // Calculate hex grid bounds with extra padding to ensure full coverage
+            const cols = Math.ceil(canvas.width / hexWidth(hexSize)) + 4;
+            const rows = Math.ceil(canvas.height / (hexHeight(hexSize) * 0.75)) + 4;
+            
+            // Draw hex overlays
+            for (let q = -4; q < cols; q++) {
+                for (let r = -4; r < rows; r++) {
+                    const { x, y } = axialToPixel(q, r, hexSize, offsetX, offsetY);
+                    
+                    // Skip if outside canvas
+                    if (x < -hexSize || x > canvas.width + hexSize ||
+                        y < -hexSize || y > canvas.height + hexSize) continue;
+                    
+                    const key = getHexKey(q, r);
+                    const data = hexData[key] || { explored: false, description: '' };
+                    
+                    // Draw unexplored overlay
+                    if (!data.explored) {
+                        ctx.fillStyle = `rgba(0, 0, 0, 0.7)`;
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${gridOpacity})`;
+                        ctx.lineWidth = 1;
+                        drawHexagon(x, y, hexSize);
+                    } else {
+                        // Draw subtle border for explored hexes
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${gridOpacity})`;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        for (let i = 0; i < 6; i++) {
+                            const angle = Math.PI / 3 * i;
+                            const hx = x + hexSize * Math.cos(angle);
+                            const hy = y + hexSize * Math.sin(angle);
+                            if (i === 0) ctx.moveTo(hx, hy);
+                            else ctx.lineTo(hx, hy);
+                        }
+                        ctx.closePath();
+                        ctx.stroke();
+                    }
+                    
+                    // Draw player location marker
+                    if (playerLocation === key) {
+                        ctx.fillStyle = '#dc143c';
+                        ctx.strokeStyle = '#fff';
+                        ctx.lineWidth = 3;
+                        ctx.font = 'bold 30px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.strokeText('✕', x, y);
+                        ctx.fillText('✕', x, y);
+                    }
+                }
+            }
+            
+            // Highlight selected hex in edit mode
+            if (isAuthenticated && selectedHexKey) {
+                const [q, r] = selectedHexKey.split(',').map(Number);
+                const { x, y } = axialToPixel(q, r, hexSize, offsetX, offsetY);
+                ctx.strokeStyle = '#ffd700';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                for (let i = 0; i < 6; i++) {
+                    const angle = Math.PI / 3 * i - Math.PI / 6; // Match the rotation
+                    const hx = x + hexSize * Math.cos(angle);
+                    const hy = y + hexSize * Math.sin(angle);
+                    if (i === 0) ctx.moveTo(hx, hy);
+                    else ctx.lineTo(hx, hy);
+                }
+                ctx.closePath();
+                ctx.stroke();
+            }
+        }
+        
+        function showStatus(message, isError = false) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.textContent = message;
+            statusDiv.className = 'status ' + (isError ? 'error' : 'success');
+            setTimeout(() => {
+                statusDiv.textContent = '';
+                statusDiv.className = '';
+            }, 3000);
+        }
+        
+        // Event listeners
+        document.getElementById('mapImage').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        mapImage = img;
+                        drawMap();
+                        showStatus('Map loaded successfully!');
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+        
+        document.getElementById('hexSize').addEventListener('input', (e) => {
+            hexSize = parseInt(e.target.value);
+            document.getElementById('hexSizeValue').textContent = hexSize;
+            drawMap();
+        });
+        
+        document.getElementById('offsetX').addEventListener('input', (e) => {
+            offsetX = parseInt(e.target.value);
+            document.getElementById('offsetXValue').textContent = offsetX;
+            drawMap();
+        });
+        
+        document.getElementById('offsetY').addEventListener('input', (e) => {
+            offsetY = parseInt(e.target.value);
+            document.getElementById('offsetYValue').textContent = offsetY;
+            drawMap();
+        });
+        
+        document.getElementById('gridOpacity').addEventListener('input', (e) => {
+            gridOpacity = parseInt(e.target.value) / 100;
+            document.getElementById('gridOpacityValue').textContent = e.target.value;
+            drawMap();
+        });
+
+        // Collapsible panel toggle
+        document.getElementById('adjustmentToggle').addEventListener('click', () => {
+            const panel = document.getElementById('adjustmentPanel');
+            const arrow = document.querySelector('.collapsible-arrow');
+            panel.classList.toggle('open');
+            arrow.classList.toggle('open');
+        });
+        
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            const password = document.getElementById('password').value;
+            if (password === PASSWORD) {
+                isAuthenticated = true;
+                document.getElementById('editMode').style.display = 'block';
+                document.getElementById('loginBtn').textContent = 'Logout';
+                showStatus('Authenticated successfully!');
+            } else if (isAuthenticated) {
+                isAuthenticated = false;
+                document.getElementById('editMode').style.display = 'none';
+                document.getElementById('loginBtn').textContent = 'Login';
+                document.getElementById('password').value = '';
+                selectedHexKey = null;
+                showStatus('Logged out');
+            } else {
+                showStatus('Incorrect password', true);
+            }
+        });
+        
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            // Account for canvas scaling - convert from display coordinates to canvas coordinates
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            const x = (e.clientX - rect.left) * scaleX;
+            const y = (e.clientY - rect.top) * scaleY;
+            
+            const { q, r } = pixelToAxial(x, y, hexSize, offsetX, offsetY);
+            const key = getHexKey(q, r);
+            const data = hexData[key] || { explored: false, description: '' };
+            
+            if (isAuthenticated) {
+                // Edit mode
+                selectedHexKey = key;
+                document.getElementById('selectedHex').textContent = `(${q}, ${r})`;
+                document.getElementById('exploredCheckbox').checked = data.explored;
+                document.getElementById('playerLocationCheckbox').checked = playerLocation === key;
+                document.getElementById('hexDescription').value = data.description || '';
+                drawMap();
+            } else {
+                // View mode - only show info for explored hexes
+                if (data.explored) {
+                    const infoPanel = document.getElementById('infoPanel');
+                    infoPanel.innerHTML = `
+                        <h2>Hex (${q}, ${r})</h2>
+                        <p>${data.description || 'No description available.'}</p>
+                    `;
+                } else {
+                    const infoPanel = document.getElementById('infoPanel');
+                    infoPanel.innerHTML = `
+                        <h2>Unexplored Territory</h2>
+                        <p>This hex has not yet been explored. Adventure awaits!</p>
+                    `;
+                }
+            }
+        });
+        
+        document.getElementById('saveHexBtn').addEventListener('click', () => {
+            if (!selectedHexKey) {
+                showStatus('No hex selected', true);
+                return;
+            }
+            
+            const explored = document.getElementById('exploredCheckbox').checked;
+            const description = document.getElementById('hexDescription').value;
+            const isPlayerLocation = document.getElementById('playerLocationCheckbox').checked;
+            
+            hexData[selectedHexKey] = { explored, description };
+            
+            if (isPlayerLocation) {
+                playerLocation = selectedHexKey;
+            } else if (playerLocation === selectedHexKey) {
+                playerLocation = null;
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('hexMapData', JSON.stringify(hexData));
+            localStorage.setItem('playerLocation', playerLocation);
+            
+            drawMap();
+            showStatus('Hex data saved!');
+        });
+        
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            const data = {
+                hexData: hexData,
+                playerLocation: playerLocation,
+                settings: {
+                    hexSize: hexSize,
+                    offsetX: offsetX,
+                    offsetY: offsetY
+                }
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'hexmap-data.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            showStatus('Map data exported!');
+        });
+        
+        document.getElementById('importBtn').addEventListener('click', () => {
+            document.getElementById('importFile').click();
+        });
+        
+        document.getElementById('importFile').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        hexData = data.hexData || {};
+                        playerLocation = data.playerLocation || null;
+                        
+                        if (data.settings) {
+                            hexSize = data.settings.hexSize || hexSize;
+                            offsetX = data.settings.offsetX || offsetX;
+                            offsetY = data.settings.offsetY || offsetY;
+                            
+                            document.getElementById('hexSize').value = hexSize;
+                            document.getElementById('hexSizeValue').textContent = hexSize;
+                            document.getElementById('offsetX').value = offsetX;
+                            document.getElementById('offsetXValue').textContent = offsetX;
+                            document.getElementById('offsetY').value = offsetY;
+                            document.getElementById('offsetYValue').textContent = offsetY;
+                        }
+                        
+                        localStorage.setItem('hexMapData', JSON.stringify(hexData));
+                        localStorage.setItem('playerLocation', playerLocation);
+                        
+                        drawMap();
+                        showStatus('Map data imported successfully!');
+                    } catch (error) {
+                        showStatus('Error importing data: ' + error.message, true);
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+        
+        // Load map data from repository or localStorage
+        async function loadMapData() {
+            // Try to load map image from repository
+            try {
+                const imageResponse = await fetch('map.png');
+                if (imageResponse.ok) {
+                    const blob = await imageResponse.blob();
+                    const img = new Image();
+                    img.onload = () => {
+                        mapImage = img;
+                        console.log('Map image loaded from repository');
+                        drawMap();
+                    };
+                    img.src = URL.createObjectURL(blob);
+                }
+            } catch (error) {
+                console.log('No map.png in repository, user can upload manually');
+            }
+            
+            // Try to load map data from repository
+            try {
+                const response = await fetch('map-data.json');
+                if (response.ok) {
+                    const data = await response.json();
+                    hexData = data.hexData || {};
+                    playerLocation = data.playerLocation || null;
+                    
+                    if (data.settings) {
+                        hexSize = data.settings.hexSize || hexSize;
+                        offsetX = data.settings.offsetX || offsetX;
+                        offsetY = data.settings.offsetY || offsetY;
+                        
+                        document.getElementById('hexSize').value = hexSize;
+                        document.getElementById('hexSizeValue').textContent = hexSize;
+                        document.getElementById('offsetX').value = offsetX;
+                        document.getElementById('offsetXValue').textContent = offsetX;
+                        document.getElementById('offsetY').value = offsetY;
+                        document.getElementById('offsetYValue').textContent = offsetY;
+                    }
+                    
+                    showStatus('Map data loaded from repository!');
+                    drawMap();
+                    return;
+                }
+            } catch (error) {
+                console.log('No map-data.json in repository, checking localStorage...');
+            }
+            
+            // Fallback to localStorage if repository file doesn't exist
+            const savedData = localStorage.getItem('hexMapData');
+            if (savedData) {
+                hexData = JSON.parse(savedData);
+                console.log('Loaded data from localStorage');
+            }
+            const savedPlayerLocation = localStorage.getItem('playerLocation');
+            if (savedPlayerLocation && savedPlayerLocation !== 'null') {
+                playerLocation = savedPlayerLocation;
+            }
+            
+            drawMap();
+        }
+        
+        // Load data on startup
+        loadMapData();
+    </script>
+</body>
+</html>
