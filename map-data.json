@@ -1,8 +1,10 @@
 {
   "hexData": {
     "2,2": {
-      "explored": true,
-      "description": ""
+      "explored": false,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
     },
     "5,2": {
       "explored": true,
@@ -11,17 +13,257 @@
     "6,1": {
       "explored": true,
       "description": "Oleg's Trading Post",
-      "poiColor": "red",
+      "poiColor": "none",
       "icon": "none"
     },
     "6,3": {
-      "explored": false,
+      "explored": true,
       "description": "hello",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "15,0": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "14,1": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "14,0": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "13,1": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "13,0": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "16,0": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "15,1": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "12,1": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "11,1": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "10,1": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "10,0": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "9,0": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "8,0": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "7,0": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "3,6": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "2,7": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "2,8": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "3,7": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "4,6": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "4,5": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "7,3": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "🏰"
+    },
+    "8,1": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "7,2": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "6,4": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "6,2": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "7,1": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "5,3": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "5,5": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "5,4": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "4,4": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "4,3": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "3,5": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "2,5": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "3,4": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "4,2": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "3,3": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "7,4": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "11,0": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "12,0": {
+      "explored": true,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "5,6": {
+      "explored": false,
+      "description": "",
       "poiColor": "none",
       "icon": "none"
     }
   },
-  "playerLocation": null,
+  "playerLocation": "2,7",
   "settings": {
     "hexSize": 161,
     "offsetX": -409,
