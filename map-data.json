@@ -23,8 +23,8 @@
   },
   "playerLocation": null,
   "settings": {
-    "hexSize": 162,
-    "offsetX": -426,
-    "offsetY": 174
+    "hexSize": 161,
+    "offsetX": -409,
+    "offsetY": 176
   }
 }
