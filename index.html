@@ -197,6 +197,75 @@
             cursor: pointer;
         }
 
+        .color-picker-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+
+        .color-swatch {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.15);
+        }
+
+        .color-swatch.selected {
+            border-color: var(--gold);
+            box-shadow: 0 0 6px rgba(212, 175, 55, 0.7);
+        }
+
+        .color-swatch[data-color="none"] {
+            background: transparent;
+            border: 3px dashed #888;
+        }
+
+        .color-swatch[data-color="blue"]  { background: #3b82f6; }
+        .color-swatch[data-color="white"] { background: #ffffff; border-color: #ccc; }
+        .color-swatch[data-color="green"] { background: #22c55e; }
+        .color-swatch[data-color="red"]   { background: #ef4444; }
+        .color-swatch[data-color="black"] { background: #1a1a1a; }
+
+        .icon-picker-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+
+        .icon-option {
+            width: 36px;
+            height: 36px;
+            border: 2px solid var(--accent);
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4em;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .icon-option:hover {
+            transform: scale(1.1);
+        }
+
+        .icon-option.selected {
+            border-color: var(--gold);
+            box-shadow: 0 0 6px rgba(212, 175, 55, 0.7);
+            background: rgba(212, 175, 55, 0.15);
+        }
+
         .status {
             text-align: center;
             padding: 10px;
@@ -363,6 +432,14 @@
                     <span style="font-size: 1.5em; color: #dc143c;">✕</span>
                     <span>Player Location</span>
                 </div>
+                <div class="legend-item">
+                    <span style="display:inline-flex; gap:4px;">
+                        <span style="width:14px;height:14px;border-radius:50%;background:#3b82f6;display:inline-block;"></span>
+                        <span style="width:14px;height:14px;border-radius:50%;background:#22c55e;display:inline-block;"></span>
+                        <span style="width:14px;height:14px;border-radius:50%;background:#ef4444;display:inline-block;"></span>
+                    </span>
+                    <span>Points of Interest</span>
+                </div>
             </div>
         </div>
 
@@ -387,7 +464,31 @@
                 <input type="checkbox" id="playerLocationCheckbox">
                 <label for="playerLocationCheckbox">Set as Player Location</label>
             </div>
-            <label for="hexDescription">Hex Description:</label>
+
+            <label>Point of Interest Dot:</label>
+            <div class="color-picker-group" id="poiColorPicker">
+                <div class="color-swatch selected" data-color="none" title="None">✕</div>
+                <div class="color-swatch" data-color="blue" title="Blue"></div>
+                <div class="color-swatch" data-color="white" title="White"></div>
+                <div class="color-swatch" data-color="green" title="Green"></div>
+                <div class="color-swatch" data-color="red" title="Red"></div>
+                <div class="color-swatch" data-color="black" title="Black"></div>
+            </div>
+
+            <label>Unexplored Icon:</label>
+            <div class="icon-picker-group" id="unexploredIconPicker">
+                <div class="icon-option selected" data-icon="none">—</div>
+                <div class="icon-option" data-icon="⚔">⚔</div>
+                <div class="icon-option" data-icon="🏰">🏰</div>
+                <div class="icon-option" data-icon="🐉">🐉</div>
+                <div class="icon-option" data-icon="💎">💎</div>
+                <div class="icon-option" data-icon="⚠">⚠</div>
+                <div class="icon-option" data-icon="🗿">🗿</div>
+                <div class="icon-option" data-icon="🌋">🌋</div>
+                <div class="icon-option" data-icon="🏚">🏚</div>
+            </div>
+
+            <label for="hexDescription">Description (shown on click):</label>
             <textarea id="hexDescription" placeholder="Enter description for this hex..."></textarea>
             <button id="saveHexBtn">Save Hex Data</button>
             <button id="exportBtn" style="margin-top: 10px;">Export Map Data</button>
@@ -504,19 +605,40 @@
                         ctx.strokeStyle = `rgba(255, 255, 255, ${gridOpacity})`;
                         ctx.lineWidth = 1;
                         drawHexagon(x, y, hexSize);
+
+                        // Draw icon on unexplored hex if set
+                        if (data.icon && data.icon !== 'none') {
+                            ctx.font = `${hexSize * 0.5}px Arial`;
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            ctx.fillText(data.icon, x, y);
+                        }
                     } else {
                         // Draw subtle border for explored hexes
                         ctx.strokeStyle = `rgba(255, 255, 255, ${gridOpacity})`;
                         ctx.lineWidth = 1;
                         ctx.beginPath();
                         for (let i = 0; i < 6; i++) {
-                            const angle = Math.PI / 3 * i;
+                            const angle = Math.PI / 3 * i - Math.PI / 6;
                             const hx = x + hexSize * Math.cos(angle);
                             const hy = y + hexSize * Math.sin(angle);
                             if (i === 0) ctx.moveTo(hx, hy);
                             else ctx.lineTo(hx, hy);
                         }
                         ctx.closePath();
+                        ctx.stroke();
+                    }
+
+                    // Draw POI dot
+                    if (data.poiColor && data.poiColor !== 'none') {
+                        const dotColors = { blue: '#3b82f6', white: '#ffffff', green: '#22c55e', red: '#ef4444', black: '#1a1a1a' };
+                        const dotRadius = hexSize * 0.25;
+                        ctx.beginPath();
+                        ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
+                        ctx.fillStyle = dotColors[data.poiColor];
+                        ctx.fill();
+                        ctx.strokeStyle = 'rgba(0,0,0,0.5)';
+                        ctx.lineWidth = 2;
                         ctx.stroke();
                     }
                     
@@ -612,6 +734,22 @@
             panel.classList.toggle('open');
             arrow.classList.toggle('open');
         });
+
+        // POI color swatch selection
+        document.querySelectorAll('#poiColorPicker .color-swatch').forEach(swatch => {
+            swatch.addEventListener('click', () => {
+                document.querySelectorAll('#poiColorPicker .color-swatch').forEach(s => s.classList.remove('selected'));
+                swatch.classList.add('selected');
+            });
+        });
+
+        // Unexplored icon selection
+        document.querySelectorAll('#unexploredIconPicker .icon-option').forEach(opt => {
+            opt.addEventListener('click', () => {
+                document.querySelectorAll('#unexploredIconPicker .icon-option').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+            });
+        });
         
         document.getElementById('loginBtn').addEventListener('click', () => {
             const password = document.getElementById('password').value;
@@ -642,7 +780,7 @@
             
             const { q, r } = pixelToAxial(x, y, hexSize, offsetX, offsetY);
             const key = getHexKey(q, r);
-            const data = hexData[key] || { explored: false, description: '' };
+            const data = hexData[key] || { explored: false, description: '', poiColor: 'none', icon: 'none' };
             
             if (isAuthenticated) {
                 // Edit mode
@@ -651,17 +789,33 @@
                 document.getElementById('exploredCheckbox').checked = data.explored;
                 document.getElementById('playerLocationCheckbox').checked = playerLocation === key;
                 document.getElementById('hexDescription').value = data.description || '';
+
+                // Highlight selected POI color swatch
+                document.querySelectorAll('#poiColorPicker .color-swatch').forEach(swatch => {
+                    swatch.classList.toggle('selected', swatch.dataset.color === (data.poiColor || 'none'));
+                });
+
+                // Highlight selected unexplored icon
+                document.querySelectorAll('#unexploredIconPicker .icon-option').forEach(opt => {
+                    opt.classList.toggle('selected', opt.dataset.icon === (data.icon || 'none'));
+                });
+
                 drawMap();
             } else {
-                // View mode - only show info for explored hexes
-                if (data.explored) {
-                    const infoPanel = document.getElementById('infoPanel');
+                // View mode — show description for any hex that has one, explored or not
+                const infoPanel = document.getElementById('infoPanel');
+                if (data.description) {
+                    const iconHtml = (data.icon && data.icon !== 'none') ? `<span style="font-size:1.4em; margin-right:8px;">${data.icon}</span>` : '';
+                    infoPanel.innerHTML = `
+                        <h2>${iconHtml}Hex (${q}, ${r})</h2>
+                        <p>${data.description}</p>
+                    `;
+                } else if (data.explored) {
                     infoPanel.innerHTML = `
                         <h2>Hex (${q}, ${r})</h2>
-                        <p>${data.description || 'No description available.'}</p>
+                        <p>No description available.</p>
                     `;
                 } else {
-                    const infoPanel = document.getElementById('infoPanel');
                     infoPanel.innerHTML = `
                         <h2>Unexplored Territory</h2>
                         <p>This hex has not yet been explored. Adventure awaits!</p>
@@ -679,8 +833,10 @@
             const explored = document.getElementById('exploredCheckbox').checked;
             const description = document.getElementById('hexDescription').value;
             const isPlayerLocation = document.getElementById('playerLocationCheckbox').checked;
+            const poiColor = document.querySelector('#poiColorPicker .color-swatch.selected').dataset.color;
+            const icon = document.querySelector('#unexploredIconPicker .icon-option.selected').dataset.icon;
             
-            hexData[selectedHexKey] = { explored, description };
+            hexData[selectedHexKey] = { explored, description, poiColor, icon };
             
             if (isPlayerLocation) {
                 playerLocation = selectedHexKey;
