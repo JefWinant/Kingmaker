@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Stolen Lands</title>
+    <title>Hex Map Explorer</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -370,8 +370,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>⚔ The Stolen Lands ⚔</h1>
-        <p class="subtitle">Explore the Kingdom of Drackenheim</p>
+        <h1>⚔ Hex Map Explorer ⚔</h1>
+        <p class="subtitle">Chart the Unknown Realms</p>
 
         <div class="controls">
             <div class="control-group">
@@ -448,9 +448,9 @@
         </div>
 
         <div class="info-panel" id="infoPanel">
-            <h2>Welcome, Adventurer, to Drackenheim!</h2>
-            <p>Click on explored hexes to view their descriptions. Greyed-out hexes are still unexplored, and hold many secrets!</p>
-            
+            <h2>Welcome, Adventurer</h2>
+            <p>Click on explored hexes to view their descriptions. Upload your hex map image to begin your journey.</p>
+            <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;"><em>Tip: Place <strong>map.jpg</strong> and <strong>map-data.json</strong> files in your repository to automatically load the map and share the state with all players. Use the Export button in edit mode to create the JSON file.</em></p>
         </div>
 
         <div class="edit-mode" id="editMode" style="display: none;">
@@ -475,7 +475,7 @@
                 <div class="color-swatch" data-color="black" title="Black"></div>
             </div>
 
-            <label>Unexplored Icon:</label>
+            <label>Hex Icon:</label>
             <div class="icon-picker-group" id="unexploredIconPicker">
                 <div class="icon-option selected" data-icon="none">—</div>
                 <div class="icon-option" data-icon="⚔">⚔</div>
@@ -605,14 +605,6 @@
                         ctx.strokeStyle = `rgba(255, 255, 255, ${gridOpacity})`;
                         ctx.lineWidth = 1;
                         drawHexagon(x, y, hexSize);
-
-                        // Draw icon on unexplored hex if set
-                        if (data.icon && data.icon !== 'none') {
-                            ctx.font = `${hexSize * 0.33}px Arial`;
-                            ctx.textAlign = 'center';
-                            ctx.textBaseline = 'middle';
-                            ctx.fillText(data.icon, x, y);
-                        }
                     } else {
                         // Draw subtle border for explored hexes
                         ctx.strokeStyle = `rgba(255, 255, 255, ${gridOpacity})`;
@@ -629,10 +621,18 @@
                         ctx.stroke();
                     }
 
+                    // Draw icon on hex if set (both explored and unexplored)
+                    if (data.icon && data.icon !== 'none') {
+                        ctx.font = `${hexSize * 0.5}px Arial`;
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(data.icon, x, y);
+                    }
+
                     // Draw POI dot
                     if (data.poiColor && data.poiColor !== 'none') {
                         const dotColors = { blue: '#3b82f6', white: '#ffffff', green: '#22c55e', red: '#ef4444', black: '#1a1a1a' };
-                        const dotRadius = hexSize * 0.25;
+                        const dotRadius = hexSize * 0.15;
                         ctx.beginPath();
                         ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
                         ctx.fillStyle = dotColors[data.poiColor];
