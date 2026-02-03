@@ -10,7 +10,15 @@
     },
     "6,1": {
       "explored": true,
-      "description": "Oleg's Trading Post"
+      "description": "Oleg's Trading Post",
+      "poiColor": "red",
+      "icon": "none"
+    },
+    "6,3": {
+      "explored": false,
+      "description": "hello",
+      "poiColor": "none",
+      "icon": "none"
     }
   },
   "playerLocation": null,
