@@ -8,13 +8,15 @@
     },
     "5,2": {
       "explored": true,
-      "description": ""
+      "description": "MOON RADISH PATCH\nA patch of delicious Moon Radishes, prized by the nearby tribe of Kobolds",
+      "poiColor": "green",
+      "icon": "none"
     },
     "6,1": {
       "explored": true,
-      "description": "Oleg's Trading Post",
+      "description": "OLEG'S TRADING POST\nA small fortified trading post, serving traders coming from Brevoy to the southern wilderness, or the River Kingdoms Beyond.\nPeople of note:\nOLEG LEVETON: grumpy trader\nSVETLANA LEVETON: innkeeper\nKESTEN GARESS: Guard Captain from Restov\n",
       "poiColor": "none",
-      "icon": "none"
+      "icon": "🏚"
     },
     "6,3": {
       "explored": true,
@@ -30,9 +32,9 @@
     },
     "14,1": {
       "explored": true,
-      "description": "",
+      "description": "RESTOV\nA major city - the cultural center of southern Brevoy, birthplace of the Aldori dueling style. Its citizens are fiercely independent, yet still swear fealty to the houses of Brevoy.\nPeople of note: \nJAMANDI D'ALDORI - the noblewoman who set you on your quest to the Stolen Lands\nIoseph Sellemius: Lord Mayor of Restov",
       "poiColor": "none",
-      "icon": "none"
+      "icon": "🏰"
     },
     "14,0": {
       "explored": true,
@@ -66,9 +68,9 @@
     },
     "12,1": {
       "explored": true,
-      "description": "",
+      "description": "NIVAKTA'S CROSSING\nA small village on the southern border of Brevoy, the last bastion of safe civilizations before you enter the wild wilderness.",
       "poiColor": "none",
-      "icon": "none"
+      "icon": "🏚"
     },
     "11,1": {
       "explored": true,
@@ -108,62 +110,62 @@
     },
     "3,6": {
       "explored": true,
-      "description": "",
+      "description": "FORT OF THE STAG LORD\nAn ancient ruin of a monastery dedicated to the evil goddess of hatred, Gyronna. It was turned into a fortress of banditry by the Stag Lord, who wanted to turn the Stolen Lands into his own bandit kingdom. You defeated him, and left the fortress to become a ruin once more.",
       "poiColor": "none",
-      "icon": "none"
+      "icon": "🗿"
     },
     "2,7": {
       "explored": true,
-      "description": "",
+      "description": "THE OLD BELDAME\nThe solitary hut of an excentric sorceress who is called \"The Old Beldame\", an expert in the occult and arcane magic. People think she's a crazy witch, which suits her just fine.",
       "poiColor": "none",
-      "icon": "none"
+      "icon": "🏚"
     },
     "2,8": {
       "explored": true,
-      "description": "",
-      "poiColor": "none",
+      "description": "THE MUD BOWL\nA field of mud heated by geothermal activity, which produces many geysers and allows rare species of mushrooms to thrive, such as the rare Black Rattlecap.",
+      "poiColor": "green",
       "icon": "none"
     },
     "3,7": {
       "explored": true,
-      "description": "",
-      "poiColor": "none",
-      "icon": "none"
+      "description": "???\nA strange set of small islands lie in the lake of Tuskwater, close to a thick patch of nettles. What secrets could they hold?",
+      "poiColor": "white",
+      "icon": "⚠"
     },
     "4,6": {
-      "explored": true,
+      "explored": false,
       "description": "",
       "poiColor": "none",
       "icon": "none"
     },
     "4,5": {
       "explored": true,
-      "description": "",
-      "poiColor": "none",
+      "description": "RIVER CROSSING\nA stretch of the Thorn river that is unusually shallow, and can be crossed by foot (though you'll still get pretty wet)",
+      "poiColor": "blue",
       "icon": "none"
     },
     "7,3": {
       "explored": true,
-      "description": "",
+      "description": "GABROVIA\nCapital of Drackenheim - a small frontier farming community, filled with hopeful settlers from Brevoy and far away.",
       "poiColor": "none",
       "icon": "🏰"
     },
     "8,1": {
       "explored": true,
-      "description": "",
+      "description": "BOKKEN'S HUT\nThe humble hut of Bokken the Alchemist",
       "poiColor": "none",
-      "icon": "none"
+      "icon": "🏚"
     },
     "7,2": {
       "explored": true,
-      "description": "",
-      "poiColor": "none",
+      "description": "SPIDER'S NEST\nThe lair of a monstrous trapdoor spider, that occasionally traps and eats travellers.\nHas an uneasy alliance with the kingdom of Drackenheim.",
+      "poiColor": "red",
       "icon": "none"
     },
     "6,4": {
       "explored": true,
-      "description": "",
-      "poiColor": "none",
+      "description": "NETTLE'S CROSSING\nAn old toll bridge set up by a man named Davik Nettle, who was killed by the Stag Lord. You set his spirit to rest by killing the Stag Lord, leading him to finally pass on and give you his Trident as a reward.",
+      "poiColor": "black",
       "icon": "none"
     },
     "6,2": {
@@ -186,57 +188,57 @@
     },
     "5,5": {
       "explored": true,
-      "description": "",
+      "description": "SOOTSCALE CAVERNS\nAn old Human mine, now inhabited by a tribe of Sootscale kobolds, under the command of Chief Sootscale.\nThey worship a piece of unspoiling pie as a symbol of their god.",
       "poiColor": "none",
-      "icon": "none"
+      "icon": "🏚"
     },
     "5,4": {
       "explored": true,
-      "description": "",
-      "poiColor": "none",
+      "description": "OLD SYCAMORE\nA massive old half-dead tree that can be seen from far away. Underneath it was the lair of evil half-fey Mites, who trained poisonous centipedes as ticks as mounts.",
+      "poiColor": "green",
       "icon": "none"
     },
     "4,4": {
       "explored": true,
-      "description": "",
-      "poiColor": "none",
+      "description": "RICKETY BRIDGE\nA dangerous, half-broken rope bridge across the Thorn River",
+      "poiColor": "blue",
       "icon": "none"
     },
     "4,3": {
       "explored": true,
-      "description": "",
-      "poiColor": "none",
+      "description": "THORN RIVER BANDIT CAMP\nA former camp of the bandits of the Stag Lord, constructed in the trees above a fordable stretch of the Thorn River.",
+      "poiColor": "black",
       "icon": "none"
     },
     "3,5": {
       "explored": true,
-      "description": "",
-      "poiColor": "none",
+      "description": "FANGBERRY PATCH\nA patch of spider-infested bushes where the rare Fangberries grow.",
+      "poiColor": "green",
       "icon": "none"
     },
     "2,5": {
-      "explored": true,
+      "explored": false,
       "description": "",
       "poiColor": "none",
       "icon": "none"
     },
     "3,4": {
       "explored": true,
-      "description": "",
-      "poiColor": "none",
+      "description": "TUSKGUTTER'S LAIR\nThe former lair of a great boar, \"Tuskgutter\", whiuch you hunted and sacrificed to Erastil.",
+      "poiColor": "black",
       "icon": "none"
     },
     "4,2": {
       "explored": true,
-      "description": "",
-      "poiColor": "none",
+      "description": "FAIRY NEST\nThe lair of the fairies Ty-Titter-Tut and (formerly) Perlivax, who play (usually harmless) pranks on passing-by travellers",
+      "poiColor": "green",
       "icon": "none"
     },
     "3,3": {
       "explored": true,
-      "description": "",
+      "description": "TEMPLE OF THE ELK\nAn ancient temple of Erastil, God of the Hunt. Currently being reconsecrated by Akiros Insmort, a fallen paladin of Erastil whom you saved from the clutches of the Stag Lord",
       "poiColor": "none",
-      "icon": "none"
+      "icon": "🗿"
     },
     "7,4": {
       "explored": true,
@@ -257,6 +259,30 @@
       "icon": "none"
     },
     "5,6": {
+      "explored": false,
+      "description": "",
+      "poiColor": "none",
+      "icon": "none"
+    },
+    "1,7": {
+      "explored": false,
+      "description": "HUT OF THE MAD HERMIT\nBokken's brother lives here, a mad hermit who attacks travellers.",
+      "poiColor": "red",
+      "icon": "none"
+    },
+    "0,8": {
+      "explored": false,
+      "description": "LIZARDFOLK VILLAGE\n???",
+      "poiColor": "white",
+      "icon": "none"
+    },
+    "1,8": {
+      "explored": false,
+      "description": "CANDLEMERE ISLAND\nStrange lights flicker at night in the ruins on the island on the middle of the Candlemere. The Lizardfolk believe them to be the spirits of their ancestors!",
+      "poiColor": "red",
+      "icon": "none"
+    },
+    "4,9": {
       "explored": false,
       "description": "",
       "poiColor": "none",
