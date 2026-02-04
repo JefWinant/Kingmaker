@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hex Map Explorer</title>
+    <title>Drackenheim</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -370,8 +370,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>⚔ Hex Map Explorer ⚔</h1>
-        <p class="subtitle">Chart the Unknown Realms</p>
+        <h1>⚔ Stolen Lands Explorer ⚔</h1>
+        <p class="subtitle">Welcome to the Kingdom of Drackenheim!</p>
 
         <div class="controls">
             <div class="control-group">
@@ -449,9 +449,10 @@
 
         <div class="info-panel" id="infoPanel">
             <h2>Welcome, Adventurer</h2>
-            <p>Click on explored hexes to view their descriptions. Upload your hex map image to begin your journey.</p>
-            <p style="margin-top: 10px; font-size: 0.9em; opacity: 0.8;"><em>Tip: Place <strong>map.jpg</strong> and <strong>map-data.json</strong> files in your repository to automatically load the map and share the state with all players. Use the Export button in edit mode to create the JSON file.</em></p>
-        </div>
+            <p>Click on explored hexes to view their descriptions.</p>
+            <p ><em>Black Icons indicate fully explored locations. Green icons are nature, blue ones are water features.</em></p>
+			<p ><em>Red indicates danger, and white icons indicate mysteries yet to be explored!</em></p>
+		</div>
 
         <div class="edit-mode" id="editMode" style="display: none;">
             <h3>✎ Edit Mode</h3>
